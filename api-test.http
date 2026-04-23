@@ -1,0 +1,33 @@
+### Login Test
+POST http://localhost:8000/api/login
+Content-Type: application/json
+
+{
+  "email": "cadinho@gmail.com",
+  "password": "mel172217"
+}
+
+### Register Test
+POST http://localhost:8000/api/register
+Content-Type: application/json
+
+{
+  "name": "Cadinho",
+  "email": "cadinho@gmail.com",
+  "password": "mel172217",
+  "password_confirmation": "mel172217",
+  "phone": "11999999999",
+  "birth": "1990-01-01"
+}
+
+### Get Current User
+GET http://localhost:8000/api/me
+Authorization: Bearer {{access_token}}
+
+### Refresh Token
+POST http://localhost:8000/api/refresh
+Authorization: Bearer {{access_token}}
+
+### Logout
+POST http://localhost:8000/api/logout
+Authorization: Bearer {{access_token}}
