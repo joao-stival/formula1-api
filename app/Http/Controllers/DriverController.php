@@ -2,55 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Races;
+use App\Models\Driver;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class RaceController extends Controller
+class DriverController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(Races::all());
+        return response()->json(Driver::with('team')->get());
     }
 
     public function store(Request $request): JsonResponse
     {
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
-            'laps'    => 'required|integer|min:1',
-            'circuit' => 'required|string|max:255',
+            'team_id' => 'required|integer|exists:teams,id',
         ]);
 
-        $race = Races::create($validated);
+        $driver = Driver::create($validated);
 
-        return response()->json($race, 201);
+        return response()->json($driver, 201);
     }
 
     public function show(string $id): JsonResponse
     {
-        $race = Races::findOrFail($id);
-        return response()->json($race);
+        $driver = Driver::with('team')->findOrFail($id);
+        return response()->json($driver);
     }
 
     public function update(Request $request, string $id): JsonResponse
     {
-        $race = Races::findOrFail($id);
+        $driver = Driver::findOrFail($id);
 
         $validated = $request->validate([
             'name'    => 'sometimes|required|string|max:255',
-            'laps'    => 'sometimes|required|integer|min:1',
-            'circuit' => 'sometimes|required|string|max:255',
+            'team_id' => 'sometimes|required|integer|exists:teams,id',
         ]);
 
-        $race->update($validated);
+        $driver->update($validated);
 
-        return response()->json($race);
+        return response()->json($driver);
     }
 
     public function destroy(string $id): JsonResponse
     {
-        $race = Races::findOrFail($id);
-        $race->delete();
+        $driver = Driver::findOrFail($id);
+        $driver->delete();
 
         return response()->json(null, 204);
     }

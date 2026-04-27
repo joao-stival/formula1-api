@@ -26,6 +26,9 @@ class User extends Authenticatable implements JWTSubject
         'phone',
         'birth',
         'photo',
+        'favorite_pilot',
+        'favorite_team',
+        'admin',
     ];
 
     /**
@@ -77,3 +80,4 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 }
+

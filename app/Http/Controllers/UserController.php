@@ -57,6 +57,21 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function toggleAdmin(Request $request, string $id): JsonResponse
+    {
+        $currentUser = Auth::user();
+
+        if (!$currentUser || !$currentUser->admin) {
+            return response()->json(['message' => 'Acesso negado.'], 403);
+        }
+
+        $user = User::findOrFail($id);
+        $user->admin = !$user->admin;
+        $user->save();
+
+        return response()->json(['id' => $user->id, 'admin' => $user->admin]);
+    }
+
     public function destroy(string $id): JsonResponse
     {
         $user = User::findOrFail($id);
@@ -90,3 +105,4 @@ class UserController extends Controller
         ]);
     }
 }
+
